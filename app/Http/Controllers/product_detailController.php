@@ -35,6 +35,7 @@ class product_detailController extends Controller
 
     public function addToCart(string $product_id, Request $request)
     {
+        // FIND CART OF USER
         $saveCookie = false;
         $auth_user = Auth::user();
         if($auth_user != NULL){
@@ -56,8 +57,9 @@ class product_detailController extends Controller
             $duration = 30;
         }
 
-
-        $stock = Product::where('id',$product_id)->first()->stock;
+        
+        $product = Product::where('id',$product_id)->first();
+        $stock = $product->stock;
         $cart_item = new Cart_item;
         $quantity = $request->input('quantity_select');
 
@@ -74,6 +76,13 @@ class product_detailController extends Controller
             }
             
             $cart_item->save();
+
+            $product->stock = $product->stock - $quantity;
+            $product->save();
+        }
+        else{
+
+            return redirect()->route('productDetail',['product_id'=>$product_id])->with('failure', 'Not enough stock');
         }
         
         if($saveCookie){

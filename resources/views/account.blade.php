@@ -18,9 +18,9 @@
 
 
 @section('content')
-<div class="container-fluid justify-content-center">
+<div class="container justify-content-center">
     <div class="row no-margin align-items-center d-flex justify-content-center">
-        <h2>YOUR ACCOUNT</h2>
+        <h2 class="px-0">YOUR ACCOUNT</h2>
     </div>
 </div>
 
@@ -38,12 +38,12 @@
                                 <div class="row form-group">
                                     <h3 class="no-padding"><b>Account overview</b></h3>
                                     <label for="email" class="form-label">Email Address</label>
-                                    <input type="text" class="form-control" id="email" placeholder="mail@example.com" required minlength="10" value="{{$user->email}}" disabled>
+                                    <input type="text" class="form-control" id="email" placeholder="mail@example.com" required minlength="8" value="{{$user->email}}" disabled>
                                 </div>
 
                                 <div class="row form-group">
                                     <label for="password" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="password" placeholder="**********" required minlength="10" disabled>
+                                    <input type="password" class="form-control" id="password" placeholder="********" required minlength="8" disabled>
                                 </div>
 
                                 <div class="row form-group">

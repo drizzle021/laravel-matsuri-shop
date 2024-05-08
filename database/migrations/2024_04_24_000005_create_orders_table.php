@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('user_id');
+            $table->uuid('user_id')->nullable();
             $table->uuid('address_id');
             $table->uuid('payment_method_id');
             $table->uuid('shipping_method_id');
+            $table->decimal('total');
             $table->enum('order_status', ['PENDING', 'FINISHED']);
             $table->timestamps();
 

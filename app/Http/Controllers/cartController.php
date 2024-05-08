@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\Cart;
 use App\Models\Cart_item;
+use App\Models\Product;
 
 class cartController extends Controller
 {
@@ -44,10 +45,56 @@ class cartController extends Controller
 
     public function userCart(Cart $cart)
     {
-        $cart_items = Cart_item::where('cart_id',$cart->id)->get();
-
+        //$cart_items = Cart_item::where('cart_id',$cart->id)->get();
+        $items=Cart::with('cart_items.product')->where('id',$cart->id)->get();
+        $cart_items = $items[0]->cart_items;
         return view('cart',['cart_items'=>$cart_items]);
     }
+
+    public function updateCart(Cart $cart, Request $request)
+    {
+        $cart_item_id = $request->input("cart_item_id");
+        $cart_item = Cart_item::where('id',$cart_item_id)->first();
+        $product = Product::where('id',$cart_item->product_id)->first();
+
+        if ($request->input("action") == "remove"){
+            $product->stock = $product->stock + $cart_item->quantity; 
+
+            $cart_item->delete(); 
+
+            $product->save();
+        }
+
+        // UPDATE QUANTITY
+        else{
+            $amount = $request->input("amount-select");
+
+            // CHECK IF INPUT IS VALID
+            if($amount < 0){
+                return redirect()->route('userCart',['cart'=>$cart])->with('failure', 'Not enough stock');
+            }
+
+            $product->stock = $product->stock + ($cart_item->quantity - $amount);
+
+            if($product->stock < 0){
+                return redirect()->route('userCart',['cart'=>$cart])->with('failure', 'Not enough stock');
+            }
+            else{
+                $product->save();
+
+                $cart_item->quantity = $amount;
+
+                $cart_item->save();
+
+            }
+            
+
+        }
+
+        return redirect()->route('userCart',['cart'=>$cart]);
+    }
+
+
 
     /**
      * Show the form for creating a new resource.

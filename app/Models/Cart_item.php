@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use Ramsey\Uuid\Uuid;
 
+
 class Cart_item extends Model
 {
     protected $primaryKey = 'id';
@@ -23,5 +24,9 @@ class Cart_item extends Model
         static::creating(function ($model) {
             $model->id = Uuid::uuid4()->toString();
         });
+    }
+
+    public function product(){
+        return $this->belongsTo('App\Models\Product');
     }
 }

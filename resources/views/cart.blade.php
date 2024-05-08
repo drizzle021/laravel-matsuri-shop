@@ -17,6 +17,13 @@
 
 <body class="cart-background">
 @section('content')
+@if (session('failure'))
+    <div class="alert alert-danger">
+        <ul>
+            {{ session('failure') }}
+        </ul>
+    </div>
+@endif
         <div class="container justify-content-center">
             <div class="row">
                 <h2 class="px-0">SHOPPING CART</h2>
@@ -52,52 +59,60 @@
                     <div class="cart-items">
                         <div class="container-fluid">
                             @foreach ($cart_items as $item)
-                            <div class="cart-item">
-                                <div class="row d-flex ">
-                                    <div class="col-2 d-flex justify-content-center">
-                                        <div class="item-image">
-                                            <img src="img/mem.jpg">
-                                        </div>
-                                    </div>
-                                    <div class="col-4 d-flex align-items-center">
-                                        <a href="{{route("productDetail",['product_id'=>$item->product_id])}}">{{App\Models\Product::where('id',$item->product_id)->first()->name}}</a>
-                                    </div>
-                                    <div class="col-1 d-flex align-items-center">
-                                        <div class="row">
-                                            <div class="row my-0"> Amount:</div>
-                                            <div class="row my-0"><select name="amount-select" class="amount-select" autocomplete="off">
-                                                <option>1</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
-                                                <option selected>5</option>
-                                            </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-2 d-flex align-items-center">
-                                        <div class="row">
-                                            <div class="col-6 d-flex align-items-center">
-                                                <div class="row">
-                                                    <div class="row my-0 px-0 mx-1"><b class="no-padding">Price:</b></div>
-                                                    <div class="row my-0 px-0 mx-1">26.99€</div>
-                                                </div>
-
-                                            </div>
-                                            <div class="col-6 d-flex align-items-center">
-                                                <div class="row">
-                                                    <div class="row my-0 px-0 mx-1"><b class="no-padding">Subtotal:</b></div>
-                                                    <div class="row my-0 px-0 mx-1">134.95€</div>
+                                <div class="cart-item">
+                                    <form action="{{route("updateCart",["cart"=>$item->cart_id])}}" method="POST" id="updateCart{{$item->id}}" accept-charset="UTF-8">
+                                        @csrf
+                                        <input name="cart_item_id" value="{{$item->id}}" hidden></input>
+                                        <div class="row d-flex ">
+                                            <div class="col-2 d-flex justify-content-center">
+                                                <div class="item-image">
+                                                    <img src="{{ asset('products') }}/{{ $item->product->main_img }}">
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-1 d-flex align-items-center">
-                                        <button class="remove">Remove</button>
-                                    </div>
+                                            <div class="col-4 d-flex align-items-center">
+                                                <a href="{{route('productDetail',['product_id'=>$item->product->id])}}">{{$item->product->name}}</a>
+                                            </div>
+                                            <div class="col-1 d-flex align-items-center">
+                                                <div class="row">
+                                                    <div class="row my-0"> Amount:</div>
+                                                    <div class="row my-0">
+                                                        <select name="amount-select" class="amount-select" autocomplete="off" onchange="this.form.submit()">
+                                                        @for($i = 1; $i <= $item->product->stock+$item->quantity && $i <= 5; $i++)
+                                                            @if ($i == $item->quantity)
+                                                                <option value="{{$i}}" selected>{{$i}}</option> {{-- CHANGE CART ITEM QUANTITY ON FIELD CHANGE  --}}
+                                                            @else
+                                                                <option value="{{$i}}">{{$i}}</option>
+                                                            @endif
+                                                            
+                                                        @endfor
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-2 d-flex align-items-center">
+                                                <div class="row">
+                                                    <div class="col-6 d-flex align-items-center">
+                                                        <div class="row">
+                                                            <div class="row my-0 px-0 mx-1"><b class="no-padding">Price:</b></div>
+                                                            <div class="row my-0 px-0 mx-1">{{number_format($item->product->price - $item->product->price*$item->product->discount, 2, '.', ',' )}}€</div>
+                                                        </div>
 
-                                </div>
-                            </div> 
+                                                    </div>
+                                                    <div class="col-6 d-flex align-items-center">
+                                                        <div class="row">
+                                                            <div class="row my-0 px-0 mx-1"><b class="no-padding">Subtotal:</b></div>
+                                                            <div class="row my-0 px-0 mx-1">{{number_format($item->product->price - $item->product->price*$item->product->discount, 2, '.', ',' )*$item->quantity}}€</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-1 d-flex align-items-center">
+                                                <button class="remove" name="action" value="remove">Remove</button>
+                                            </div>
+
+                                        </div>
+                                    </form>
+                                </div> 
                             @endforeach
                             
                         </div>
@@ -105,8 +120,16 @@
                 </div>
 
                 <div class="container">
-                    <div class="row d-flex justify-content-center d-lg-block"><p class="total">Item total: 4119.94€</p></div>
-                    <div class="row d-flex justify-content-center d-lg-block"><button class="checkout">Checkout</button></div>
+                    @php
+                        $sum=0;
+                        foreach($cart_items as $item){
+                            $sum = $sum + ($item->product->price - $item->product->price*$item->product->discount)*$item->quantity;
+                        }  
+                    @endphp
+                    <div class="row d-flex justify-content-center d-lg-block"><p class="total">Item total: {{number_format($sum, 2, '.', ',' )}}€</p></div>
+                    <div class="row d-flex justify-content-center d-lg-block">
+                        <button type="button" onclick="location.href = '{{route('checkout',['cart'=>$cart_items[0]->cart_id])}}';" class="checkout">Checkout</button>
+                    </div>
                 </div>
 
 

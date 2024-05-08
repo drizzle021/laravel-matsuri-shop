@@ -4,15 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
 use Ramsey\Uuid\Uuid;
 
-
-class Cart extends Model
+class Order extends Model
 {
-    protected $primaryKey = 'id';    
+    protected $primaryKey = 'id';
     protected $keyType = 'uuid';
     public $incrementing = false;
 
+
+    
     use HasFactory;
 
     protected static function boot()
@@ -21,12 +23,11 @@ class Cart extends Model
 
         static::creating(function ($model) {
             $model->id = Uuid::uuid4()->toString();
-
-
         });
     }
 
-    public function cart_items(){
-        return $this->hasMany('App\Models\Cart_item');
+
+    public function order_items(){
+        return $this->hasMany('App\Models\Order_item');
     }
 }

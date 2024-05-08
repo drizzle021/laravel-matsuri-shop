@@ -292,7 +292,7 @@
                     {{ session('success') }}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="$('#successModal').modal('hide');">OK</button>
                 </div>
             </div>
         </div>
@@ -316,7 +316,7 @@
                     {{ session('failure') }}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="$('#failureModal').modal('hide');">OK</button>
                 </div>
             </div>
         </div>
@@ -340,7 +340,7 @@
                     {{ session('update') }}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="$('#updateModal').modal('hide');">OK</button>
                 </div>
             </div>
         </div>
@@ -496,9 +496,13 @@
                                                         <div class="col-5">
                                                             <a href="/product/{{ $products[2*$i+$j]->id }}" class="detail">Detail</a>
                                                         </div>
-                                                        <div class="col-5">
-                                                            <button class="edit-product-button" type="button" data-toggle="modal" data-target="#edit{{ $products[2*$i+$j]->id }}">Edit</button>
-                                                        </div>
+                                                        @auth  
+                                                            @if($auth_user->role == 'ADMIN')
+                                                                <div class="col-5">
+                                                                    <button class="edit-product-button" type="button" data-toggle="modal" data-target="#edit{{ $products[2*$i+$j]->id }}">Edit</button>
+                                                                </div>
+                                                            @endif
+                                                        @endauth
 
                                                     </div>
 

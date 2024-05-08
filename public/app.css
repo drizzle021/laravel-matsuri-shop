@@ -6,6 +6,7 @@ body {
     flex-direction: column;
     min-height: 100vh;
     margin: 0;
+    overflow-x: hidden;
 }
 
 a{
@@ -697,8 +698,8 @@ h2{
 .cart-background{
   background-image: url("img/crosshatch\ 1.jpg");
   background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+  background-position: bottom;
+  background-size: 120%;
   background-blend-mode: hard-light;
 }
 

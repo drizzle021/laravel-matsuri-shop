@@ -7,6 +7,7 @@ use App\Http\Controllers\product_detailController;
 use App\Http\Controllers\indexController;
 use App\Http\Controllers\accountController;
 use App\Http\Controllers\cartController;
+use App\Http\Controllers\checkoutController;
 
 Route::get('/', [indexController::class, 'index'])->name('index');
 // ACCOUNT
@@ -18,6 +19,14 @@ Route::post('/account/{user}/updateAccount', [accountController::class, 'updateA
 // CART
 Route::get('/cart', [cartController::class, 'cart'])->name('cart');
 Route::get('/cart/{cart}', [cartController::class, 'userCart'])->name('userCart');
+
+Route::post('/cart/{cart}/updateCart', [cartController::class, 'updateCart'])->name('updateCart');
+
+// CHECKOUT
+
+Route::get('/cart/{cart}/checkout', [checkoutController::class, 'checkout'])->name('checkout');
+
+Route::post('/cart/{cart}/checkout/sendOrder', [checkoutController::class, 'sendOrder'])->name('sendOrder');
 
 
 // PRODUCT DETAIL
@@ -68,9 +77,9 @@ Route::post('/products/editProduct', [product_listController::class, 'editProduc
 
 
 
-Route::get('/dashboard', function () {
+/* Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard'); */
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

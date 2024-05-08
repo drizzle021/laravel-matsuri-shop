@@ -18,6 +18,14 @@
 
  @section('content')
 
+ @if (session('failure'))
+        <div class="alert alert-danger">
+            <ul>
+                {{ session('failure') }}
+            </ul>
+        </div>
+@endif
+
     <div class="product-detail">
         <div class="container">
             <div class="row">
@@ -37,28 +45,35 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-8 d-lg-block d-flex">
+                            <div class="col-lg-8 d-lg-block d-flex mb-5">
                                 <div class="large-product-preview">
                                     <img src="{{ asset('products') }}/{{ $product->main_img }}" id="largeProductIMG">
                                 </div>
                             </div>
                         </div>
-                        <div class="row d-flex d-xl-none mt-3">
-                            <div class="col-2">
-                                <div class="small-product-preview-hor">
-                                    <img class="active" src="{{ asset('products') }}/{{ $product->main_img }}" onclick="changePreviewImageHorizontal(this)">
+                        <div class="row d-flex d-xl-none mt-5">
+                            <div class="col">
+                                <div class="row">
+                                    <div class="col-2">
+                                        <div class="small-product-preview-hor">
+                                            <img class="active" src="{{ asset('products') }}/{{ $product->main_img }}" onclick="changePreviewImageHorizontal(this)">
+                                        </div>
+                                    </div>
+                                    <div class="col-2 ml-2">
+                                        <div class="small-product-preview-hor">
+                                            <img src="{{ asset('products') }}/{{ $product->side_img_1 }}" onclick="changePreviewImageHorizontal(this)">
+                                        </div>
+                                    </div>
+                                    <div class="col-2 ml-2">
+                                        <div class="small-product-preview-hor">
+                                            <img src="{{ asset('products') }}/{{ $product->side_img_2 }}" onclick="changePreviewImageHorizontal(this)">
+                                        </div>
+                                    </div>
+
                                 </div>
+                               
                             </div>
-                            <div class="col-2 ml-2">
-                                <div class="small-product-preview-hor">
-                                    <img src="{{ asset('products') }}/{{ $product->side_img_1 }}" onclick="changePreviewImageHorizontal(this)">
-                                </div>
-                            </div>
-                            <div class="col-2 ml-2">
-                                <div class="small-product-preview-hor">
-                                    <img src="{{ asset('products') }}/{{ $product->side_img_2 }}" onclick="changePreviewImageHorizontal(this)">
-                                </div>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -196,7 +211,7 @@
 
 
         @if(count($recommendations) > 0)
-            <div class="container-fluid bg-dark">
+            <div class="container-fluid bg-dark px-0">
                 <div class="container product-recommendation">
                     <div>
                         <h2>More like this</h2>
