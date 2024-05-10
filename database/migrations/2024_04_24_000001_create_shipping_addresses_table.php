@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('first_name', 50);
             $table->string('last_name', 50);
-            $table->string('country', 10);      // beirni a dokumentaciaba hogy kicsereltuk
+            $table->string('country', 10);
             $table->string('city', 26);
             $table->string('zip', 6);
             $table->string('phone', 15);

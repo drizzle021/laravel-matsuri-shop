@@ -38,17 +38,23 @@ class product_detailController extends Controller
         // FIND CART OF USER
         $saveCookie = false;
         $auth_user = Auth::user();
+
+        // LOGGED IN USER
         if($auth_user != NULL){
             $user_cart = Cart::where('user_id',$auth_user->id)->first();
+            // IF USER DOESNT HAVE A CART CREATE ONE
             if ($user_cart == NULL){
                 $user_cart=new Cart;
                 $user_cart->user_id = $auth_user->id;
                 $user_cart->save();
             }
         }
+        // IF UNREGISTERED USER AND HAS A CART SAVED IN COOKIES, FIND IT
         elseif ($request->cookie('cart') != NULL) {
             $user_cart = $request->cookie('cart');
         }
+        // IF UNREGISTERED USER AND DOESNT HAVE A CART SAVED IN COOKIES
+        // CREATE CART AND SAVE ID TO COOKIES
         else{
             $saveCookie = true;
             $user_cart = new Cart;

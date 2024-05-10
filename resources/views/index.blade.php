@@ -74,7 +74,7 @@
         <div class="container px-0">
             <div class="row">
                 <div class="col px-0  d-flex justify-content-center">
-                    <a href="{{route('products',['page'=>0])}}">
+                    <a href="{{url('/products/list?filter-range-price-min=0&filter-range-price-max=300&product-list-order-by=disc_hi_lo')}}">
                         <div class="category">
                             <div class="category-image">
                                 <img src="img/on_sale_icon.png">
@@ -86,7 +86,7 @@
                     </a>
                 </div>
                 <div class="col px-0  d-flex justify-content-center">
-                    <a href="{{route('products',['page'=>0])}}">
+                    <a href="{{url('/products/list?filter-range-price-min=0&filter-range-price-max=300&product-list-order-by=az_asc&category%5B%5D=Figure')}}">
                         <div class="category">
                             <div class="category-image">
                                 <img src="img/figures_category.jpg">
@@ -98,7 +98,7 @@
                     </a>
                 </div>
                 <div class="col px-0  d-flex justify-content-center">
-                    <a href="{{route('products',['page'=>0])}}">
+                    <a href="{{url('/products/list?filter-range-price-min=0&filter-range-price-max=300&product-list-order-by=az_asc&category%5B%5D=Manga')}}">
                         <div class="category">
                             <div class="category-image">
                                 <img src="img/manga_category.jpg">

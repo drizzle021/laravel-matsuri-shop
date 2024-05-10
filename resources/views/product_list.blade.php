@@ -17,11 +17,6 @@
 @endsection
 
 <body>
-<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script> -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 @section('content')
 @auth  
     @if($auth_user->role == 'ADMIN')
@@ -178,8 +173,8 @@
                                 {{ csrf_field() }}
 
                                 <div class="form-group">
-                                    <label for="edit-product-id" class="form-label">ID:</label>
-                                    <input type="text" class="form-control" id="edit-product-id" name="product_id" value="{{ $product->id }}" readonly>
+                                    {{-- <label for="edit-product-id" class="form-label">ID:</label> --}}
+                                    <input type="text" class="form-control" id="edit-product-id" name="product_id" value="{{ $product->id }}" readonly hidden>
                                 </div>
                                 <div class="form-group">
                                     <label for="edit-product-category" class="form-label">Category:</label>
@@ -366,17 +361,17 @@
                     <div class="col-10 col-md-10 col-lg-3">
                         <div class="row my-2">
                             <div class="d-flex justify-content-center col px-0 px-md-3 px-lg-4">
-                                <button class="add-product-button" type="button" data-toggle="modal" data-target="#addProductModal">ADD PRODUCT</button>
+                                <button class="add-product-button" type="button" data-bs-toggle="modal" data-bs-target="#addProductModal">ADD PRODUCT</button>
                             </div>
                         </div>
                         <div class="row my-2">
                             <div class="d-flex justify-content-center col px-0 px-md-3 px-lg-4">
-                                <button class="add-category-button" type="button" data-toggle="modal" data-target="#addCategoryModal">ADD CATEGORY</button>
+                                <button class="add-category-button" type="button" data-bs-toggle="modal" data-bs-target="#addCategoryModal">ADD CATEGORY</button>
                             </div>
                         </div>
                         <div class="row my-2">
                             <div class="d-flex justify-content-center col px-0 px-md-3 px-lg-4">
-                                <button class="add-series-button" type="button" data-toggle="modal" data-target="#addSeriesModal">ADD SERIES</button>
+                                <button class="add-series-button" type="button" data-bs-toggle="modal" data-bs-target="#addSeriesModal">ADD SERIES</button>
                             </div>
                         </div>
                     </div>
@@ -388,8 +383,7 @@
             <div class="row justify-content-center">
                 <div class="d-flex col-10 col-md-10 col-lg-3 justify-content-center px-0 px-md-3 px-lg-4 mx-lg-1">
                     <div class="container-fluid bg-dark product-list-filter-section p-4">
-                        <form action="{{ route('searchProduct', ['page'=>0]) }}" method="GET" id="product_list_search" accept-charset="UTF-8">
-                            {{ csrf_field() }}
+                        <form action="{{ route('searchProduct') }}" method="GET" id="product_list_search" accept-charset="UTF-8">
 
                             <div class="row pb-5 mb-4">
                                 <label class="form-label" for="filter-range-price-min">Search: </label>
@@ -404,8 +398,7 @@
                         </form>
 
 
-                        <form action="{{ route('filterProduct', ['page'=>0]) }}" method="GET" id="product_list_filter" accept-charset="UTF-8">
-                            {{ csrf_field() }}
+                        <form action="{{ route('filterProduct') }}" method="GET" id="product_list_filter" accept-charset="UTF-8">
 
                             <div class="row pb-3 justify-content-center">
                                 <button type="submit" class="product-list-filter-button" form="product_list_filter">FILTER</button>
@@ -432,7 +425,7 @@
                             </div>
                             <div class="row pb-4">
                                 <div class="col">
-                                    <button class="navbar-toggler py-4" type="button" data-toggle="collapse" data-target="#category" onclick="switchCollapseElement('category-collapse')">
+                                    <button class="navbar-toggler py-4" type="button" data-bs-toggle="collapse" data-bs-target="#category" onclick="switchCollapseElement('category-collapse')">
                                         CATEGORY
                                     </button>
                                 </div>
@@ -453,7 +446,7 @@
                             </div>
                             <div class="row pb-4">
                                 <div class="col">
-                                    <button class="navbar-toggler py-4" type="button" data-toggle="collapse" data-target="#series" onclick="switchCollapseElement('series-collapse')">
+                                    <button class="navbar-toggler py-4" type="button" data-bs-toggle="collapse" data-bs-target="#series" onclick="switchCollapseElement('series-collapse')">
                                         SERIES
                                     </button>
                                 </div>
@@ -478,10 +471,10 @@
                 <div class="col-12 col-md-8 justify-content-center px-0">
                     <div class="container justify-content-center px-0">
                         <div class="product-list-product-section">
-                            @for($i = 0; $i < count($products)/2; $i++)
+                            @for($i = 0; $i < $products->count()/2; $i++)
                                 <div class="row">
                                     @for($j = 0; $j < 2; $j++)
-                                        @if(2*$i+$j != count($products))
+                                        @if(2*$i+$j != $products->count())
                                         <div class="col">
                                             <div class="product">
                                                 <div class="product-menu">
@@ -499,7 +492,7 @@
                                                         @auth  
                                                             @if($auth_user->role == 'ADMIN')
                                                                 <div class="col-5">
-                                                                    <button class="edit-product-button" type="button" data-toggle="modal" data-target="#edit{{ $products[2*$i+$j]->id }}">Edit</button>
+                                                                    <button class="edit-product-button" type="button" data-bs-toggle="modal" data-bs-target="#edit{{ $products[2*$i+$j]->id }}">Edit</button>
                                                                 </div>
                                                             @endif
                                                         @endauth
@@ -538,145 +531,13 @@
     </div>
 </div>
 
-<!--https://getbootstrap.com/docs/5.0/components/pagination/-->
 <div class="container">
-    <div class="row d-flex justify-content-center">
-        <ul class="pagination justify-content-center">
-
-            {{-- first page active --}}
-            @if($currentPage == 0)
-                <li class="page-item active">
-                    <a class="page-link" href="/product_list/{{ $currentPage }}
-                    {{ isset($search) ? '?search='.$search : '' }}
-                    {{ isset($filter_range_price_min) ? '?filter-range-price-min='.$filter_range_price_min : '' }}
-                    {{ isset($filter_range_price_max) ? '&filter-range-price-max='.$filter_range_price_max : '' }}
-                    {{ isset($product_list_order_by) ? '&product-list-order-by='.$product_list_order_by : '' }}
-                    @if(isset($category_filter))
-                        @foreach($category_filter as $filter)
-                            '&category[]=' {{ $filter }}
-                        @endforeach
-                    @endif
-                    @if(isset($series_filter))
-                        @foreach($series_filter as $filter)
-                            '&series[]=' {{ $filter }}
-                        @endforeach
-                    @endif
-                    ">{{ $currentPage +1 }}</a></li>
-
-                @if($pageCount > 2)
-                    <li class="page-item mx-4">...</li>
-                @endif
-
-                @if($pageCount > 1)
-                    <li class="page-item">
-                        <a class="page-link" href="/product_list/{{ $pageCount-1 }}
-                        {{ isset($search) ? '?search='.$search : '' }}
-                        {{ isset($filter_range_price_min) ? '?filter-range-price-min='.$filter_range_price_min : '' }}
-                        {{ isset($filter_range_price_max) ? '&filter-range-price-max='.$filter_range_price_max : '' }}
-                        {{ isset($product_list_order_by) ? '&product-list-order-by='.$product_list_order_by : '' }}
-                        @if(isset($category_filter))
-                            @foreach($category_filter as $filter)
-                                '&category[]=' {{ $filter }}
-                            @endforeach
-                        @endif
-                        @if(isset($series_filter))
-                            @foreach($series_filter as $filter)
-                                '&series[]=' {{ $filter }}
-                            @endforeach
-                        @endif
-                        ">{{ $pageCount }}</a></li>
-
-                    <li class="page-item">
-                        <a class="page-link" href="/product_list/{{ $currentPage +1 }}
-                        {{ isset($search) ? '?search='.$search : '' }}
-                        {{ isset($filter_range_price_min) ? '?filter-range-price-min='.$filter_range_price_min : '' }}
-                        {{ isset($filter_range_price_max) ? '&filter-range-price-max='.$filter_range_price_max : '' }}
-                        {{ isset($product_list_order_by) ? '&product-list-order-by='.$product_list_order_by : '' }}
-                        @if(isset($category_filter))
-                            @foreach($category_filter as $filter)
-                                '&category[]=' {{ $filter }}
-                            @endforeach
-                        @endif
-                        @if(isset($series_filter))
-                            @foreach($series_filter as $filter)
-                                '&series[]=' {{ $filter }}
-                            @endforeach
-                        @endif" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                @endif
-
-            {{-- middle page active --}}
-{{--            @elseif()--}}
-
-
-
-            {{-- last page active --}}
-            @elseif($currentPage == $pageCount -1 && $pageCount > 1)
-                <li class="page-item">
-                    <a class="page-link" href="/product_list/{{ $currentPage -1 }}
-                    {{ isset($search) ? '?search='.$search : '' }}
-                    {{ isset($filter_range_price_min) ? '?filter-range-price-min='.$filter_range_price_min : '' }}
-                        {{ isset($filter_range_price_max) ? '&filter-range-price-max='.$filter_range_price_max : '' }}
-                        {{ isset($product_list_order_by) ? '&product-list-order-by='.$product_list_order_by : '' }}
-                        @if(isset($category_filter))
-                            @foreach($category_filter as $filter)
-                                '&category[]=' {{ $filter }}
-                            @endforeach
-                        @endif
-                        @if(isset($series_filter))
-                            @foreach($series_filter as $filter)
-                                '&series[]=' {{ $filter }}
-                            @endforeach
-                        @endif" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-
-                <li class="page-item"><a class="page-link" href="/product_list/0
-                    {{ isset($search) ? '?search='.$search : '' }}
-                    {{ isset($filter_range_price_min) ? '?filter-range-price-min='.$filter_range_price_min : '' }}
-                            {{ isset($filter_range_price_max) ? '&filter-range-price-max='.$filter_range_price_max : '' }}
-                            {{ isset($product_list_order_by) ? '&product-list-order-by='.$product_list_order_by : '' }}
-                            @if(isset($category_filter))
-                                @foreach($category_filter as $filter)
-                                    '&category[]=' {{ $filter }}
-                                @endforeach
-                            @endif
-                            @if(isset($series_filter))
-                                @foreach($series_filter as $filter)
-                                    '&series[]=' {{ $filter }}
-                                @endforeach
-                            @endif">1</a></li>
-
-                @if($pageCount > 2)
-                    <li class="page-item mx-4">...</li>
-                @endif
-
-                @if($pageCount > 1)
-                    <li class="page-item active"><a class="page-link" href="/product_list/{{ $pageCount-1 }}
-                        {{ isset($search) ? '?search='.$search : '' }}
-                        {{ isset($filter_range_price_min) ? '?filter-range-price-min='.$filter_range_price_min : '' }}
-                            {{ isset($filter_range_price_max) ? '&filter-range-price-max='.$filter_range_price_max : '' }}
-                            {{ isset($product_list_order_by) ? '&product-list-order-by='.$product_list_order_by : '' }}
-                            @if(isset($category_filter))
-                                @foreach($category_filter as $filter)
-                                    '&category[]=' {{ $filter }}
-                                @endforeach
-                            @endif
-                            @if(isset($series_filter))
-                                @foreach($series_filter as $filter)
-                                    '&series[]=' {{ $filter }}
-                                @endforeach
-                            @endif">{{ $pageCount }}</a></li>
-
-                @endif
-
-            @endif
-        </ul>
-    </div>
+    {{ $products->links() }}
+    
 </div>
+
+<!--https://getbootstrap.com/docs/5.0/components/pagination/-->
+
 @endsection
 
 

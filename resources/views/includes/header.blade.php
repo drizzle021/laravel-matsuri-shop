@@ -15,20 +15,20 @@
 
             <ul class="navbar-nav d-none d-lg-block">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('products',['page'=>0])}}">PRODUCTS</a>
+                    <a class="nav-link" href="{{route('products', ['page'=>1])}}">PRODUCTS</a>
                 </li>
             </ul>
 
             <div class="flex-grow-1"></div>
 
-            <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto d-lg-none">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('products',['page'=>0])}}">PRODUCTS</a>
+                        <a class="nav-link" href="{{route('products',['page'=>1])}}">PRODUCTS</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('cart')}}">CART</a>

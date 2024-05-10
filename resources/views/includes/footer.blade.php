@@ -9,15 +9,15 @@
                 <li><a href="{{ route('register') }}">Register</a></li> 
                 @endauth
                 
-                <li><a href="/shopping_cart">Shopping Cart</a></li>
+                <li><a href="{{route('cart')}}">Shopping Cart</a></li>
             </ul>
         </div>
         <div class="col-12 col-md-2">
             <ul>
                 <li>Products</li>
-                <li><a href="{{route('products',['page'=>0])}}">On-Sale Items</a></li>
-                <li><a href="{{route('products',['page'=>0])}}">Manga</a></li>
-                <li><a href="{{route('products',['page'=>0])}}">Figures</a></li>
+                <li><a href="{{url('/products/list?filter-range-price-min=0&filter-range-price-max=300&product-list-order-by=disc_hi_lo')}}">On-Sale Items</a></li>
+                <li><a href="{{url('/products/list?filter-range-price-min=0&filter-range-price-max=300&product-list-order-by=az_asc&category%5B%5D=Manga')}}">Manga</a></li>
+                <li><a href="{{url('/products/list?filter-range-price-min=0&filter-range-price-max=300&product-list-order-by=az_asc&category%5B%5D=Figure')}}">Figures</a></li>
             </ul>
         </div>
         <div class="col-12 col-md-2">
@@ -37,4 +37,5 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 {{-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> --}}
-<script src="{{asset('script.js')}}"></script>
+<script src="{{asset('product.js')}}"></script>
+<script src="{{asset('checkout.js')}}"></script>

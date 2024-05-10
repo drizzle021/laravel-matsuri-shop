@@ -31,7 +31,7 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:320', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -51,7 +51,6 @@ class RegisteredUserController extends Controller
             $cart = Cart::where('id',$user_cart)->first();
             $cart->user_id = $user->id;
             $cart->save();
-            
         }
 
         return redirect(route('index', absolute: false));
