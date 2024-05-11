@@ -24,8 +24,7 @@ class product_detailController extends Controller
         $series = $product->series_id;
 
         $recommendations = DB::table('products')->where(function ($query) use ($author, $series, $product) {
-            $query->where('author', 'like', $author)
-                ->orWhere('series_id', $series);
+            $query->where('series_id', $series);
         })->whereNot('id', $product->id)->inRandomOrder()->take(3)->get();
 
 

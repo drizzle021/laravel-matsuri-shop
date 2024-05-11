@@ -79,7 +79,7 @@
                                                         <select name="amount-select" class="amount-select" autocomplete="off" onchange="this.form.submit()">
                                                         @for($i = 1; $i <= $item->product->stock+$item->quantity && $i <= 5; $i++)
                                                             @if ($i == $item->quantity)
-                                                                <option value="{{$i}}" selected>{{$i}}</option> {{-- CHANGE CART ITEM QUANTITY ON FIELD CHANGE  --}}
+                                                                <option value="{{$i}}" selected>{{$i}}</option>
                                                             @else
                                                                 <option value="{{$i}}">{{$i}}</option>
                                                             @endif

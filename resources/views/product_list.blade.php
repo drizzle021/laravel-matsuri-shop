@@ -405,13 +405,13 @@
                             </div>
                             <div class="row justify-content-center pb-3">
                                 <label class="form-label" for="filter-range-price-min">Price from (€):</label>
-                                <input type="range" id="filter-range-price-min" name="filter-range-price-min" value="0" min="0" max="300" step="5">
-                                <input type="number" id="filter-min-text" value="0" min="0" max="300" step="5" class="form-control" onchange="changeSliderValue(this.value, 'filter-range-price-min')">
+                                <input type="range" id="filter-range-price-min" name="filter-range-price-min" value="0" min="0" max="5000" step="5">
+                                <input type="number" id="filter-min-text" value="0" min="0" max="5000" step="5" class="form-control" onchange="changeSliderValue(this.value, 'filter-range-price-min')">
                             </div>
                             <div class="row justify-content-center pb-5">
                                 <label class="form-label" for="filter-range-price-max">Price to (€):</label>
-                                <input type="range" id="filter-range-price-max" name="filter-range-price-max" value="300" min="0" max="300" step="5">
-                                <input type="number" id="filter-max-text" value="300" min="0" max="300"  step="5" class="form-control" onchange="changeSliderValue(this.value, 'filter-range-price-max')">
+                                <input type="range" id="filter-range-price-max" name="filter-range-price-max" value="5000" min="0" max="5000" step="5">
+                                <input type="number" id="filter-max-text" value="5000" min="0" max="5000"  step="5" class="form-control" onchange="changeSliderValue(this.value, 'filter-range-price-max')">
                             </div>
                             <div class="row justify-content-center pb-4">
                                 <label for="product-list-order-by" class="form-label">Order By</label>
@@ -471,58 +471,72 @@
                 <div class="col-12 col-md-8 justify-content-center px-0">
                     <div class="container justify-content-center px-0">
                         <div class="product-list-product-section">
-                            @for($i = 0; $i < $products->count()/2; $i++)
-                                <div class="row">
-                                    @for($j = 0; $j < 2; $j++)
-                                        @if(2*$i+$j != $products->count())
-                                        <div class="col">
-                                            <div class="product">
-                                                <div class="product-menu">
-                                                    <p class="product-title">{{ $products[2*$i+$j]->name }}</p>
-                                                    <p class="product-author">{{ $products[2*$i+$j]->author }}</p>
-                                                    <div class="wrapper">
-                                                        <div class="product-desc">
-                                                            {{ $products[2*$i+$j]->description }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-5">
-                                                            <a href="/product/{{ $products[2*$i+$j]->id }}" class="detail">Detail</a>
-                                                        </div>
-                                                        @auth  
-                                                            @if($auth_user->role == 'ADMIN')
-                                                                <div class="col-5">
-                                                                    <button class="edit-product-button" type="button" data-bs-toggle="modal" data-bs-target="#edit{{ $products[2*$i+$j]->id }}">Edit</button>
+                            @if($products->count() > 0)
+                                @for($i = 0; $i < $products->count()/2; $i++)
+                                    <div class="row">
+                                        @for($j = 0; $j < 2; $j++)
+                                            @if(2*$i+$j != $products->count())
+                                                <div class="col">
+                                                    <div class="product">
+                                                        <div class="product-menu">
+                                                            <p class="product-title">{{ $products[2*$i+$j]->name }}</p>
+                                                            <p class="product-author">{{ $products[2*$i+$j]->author }}</p>
+                                                            <div class="wrapper">
+                                                                <div class="product-desc">
+                                                                    {{ $products[2*$i+$j]->description }}
                                                                 </div>
-                                                            @endif
-                                                        @endauth
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-5">
+                                                                    <a href="/product/{{ $products[2*$i+$j]->id }}" class="detail">Detail</a>
+                                                                </div>
+                                                                @auth  
+                                                                    @if($auth_user->role == 'ADMIN')
+                                                                        <div class="col-5">
+                                                                            <button class="edit-product-button" type="button" data-bs-toggle="modal" data-bs-target="#edit{{ $products[2*$i+$j]->id }}">Edit</button>
+                                                                        </div>
+                                                                    @endif
+                                                                @endauth
+
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="product-image">
+                                                            <img src="{{ asset('products') }}/{{ $products[2*$i+$j]->main_img }}">
+                                                        </div>
+
+                                                        <span class="overlay-cost">{{ $products[2*$i+$j]->price }}€</span>
+
+                                                        @if($products[2*$i+$j]->discount > 0)
+                                                            <span class="overlay-discount">-{{ $products[2*$i+$j]->discount * 100 }}%<br>
+                                                            {{ number_format($products[2*$i+$j]->price - $products[2*$i+$j]->price * $products[2*$i+$j]->discount, 2, '.', ',' ) }}€</span>
+
+                                                        @endif
 
                                                     </div>
-
-                                                    <!-- <button class="to-cart">Add to cart</button> -->
-
                                                 </div>
-                                                <div class="product-image">
-                                                    <img src="{{ asset('products') }}/{{ $products[2*$i+$j]->main_img }}">
-                                                </div>
+                                            @endif
+                                        @endfor
+                                    </div>
+                                @endfor
 
-                                                <span class="overlay-cost">{{ $products[2*$i+$j]->price }}€</span>
+                                @else
 
-                                                @if($products[2*$i+$j]->discount > 0)
-                                                    <span class="overlay-discount">-{{ $products[2*$i+$j]->discount * 100 }}%<br>
-                                                    {{ number_format($products[2*$i+$j]->price - $products[2*$i+$j]->price * $products[2*$i+$j]->discount, 2, '.', ',' ) }}€</span>
-
-                                                @endif
-
-
-
-                                            </div>
+                                <div class="container">
+                                    <div class="row align-items-center">
+                                        <div class="col d-flex justify-content-center">
+                                            <img class="empty-cart" src="{{asset("img/emptyCart.png")}}" alt="">
                                         </div>
-                                        @endif
-                                    @endfor
+                                        <div class="col" style="font-weight:bold;color:#FFF;font-size:2rem">
+                                           <div class="row">
+                                                <p>
+                                                    No results found..
+                                                </p>
+                                           </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            @endfor
-
+                            @endif
                         </div>
                     </div>
                 </div>
